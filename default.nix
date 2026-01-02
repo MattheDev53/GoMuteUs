@@ -15,7 +15,7 @@
 
 buildGoApplication {
   pname = "GoMuteUs";
-  version = "0.0.0";
+  version = "1.0.0";
   pwd = ./.;
   src = ./.;
   modules = ./gomod2nix.toml;
