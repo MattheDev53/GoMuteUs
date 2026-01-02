@@ -26,6 +26,14 @@ func main() {
 	}
 	defer discord.Session.Close()
 
+  mems, err := discord.Session.GuildMembers(discord.Conf.GuildID, "0", 99)
+
+	for i := 0; i < len(mems); i++ {
+		if !mems[i].User.Bot {
+			discord.Members = append(discord.Members, mems[i])
+		}
+	}
+	discord.InitializeUserState()
 
 	cmd := ""
 	for cmd != "exit" {

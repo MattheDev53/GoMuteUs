@@ -18,8 +18,7 @@ const (
 var Session     *discordgo.Session
 var MemberState [99]State
 var Conf        cfg.Config
-
-var	Members, err = Session.GuildMembers(Conf.GuildID, "0", 99)
+var Members []*discordgo.Member
 
 func ListAllMembers() {
 	for i := 0; i < len(Members); i++ {
@@ -42,8 +41,39 @@ func ListNotInState(state State) {
 }
 
 func InitializeUserState() {
+	fmt.Println("Optimizing User List")
 	for i := 0; i < len(Members); i++ {
-		MemberState[i] = Alive
+		if UserOnline(i) {
+			SetUserState(i, Alive)
+		} else {
+			SetUserState(i, Offline)
+		}
+	}
+}
+func OptimizeUsers() {
+	fmt.Println("Optimizing User List")
+	for i := 0; i < len(Members); i++ {
+		if !UserOnline(i) {
+			SetUserState(i, Offline)
+		}
+	}
+}
+
+func SetUserState(id int, s State) {
+	if id == -1 {
+		ListNotInState(Offline)
+		fmt.Printf("Select a User |> ")
+		fmt.Scanln(&id)
+	}
+	MemberState[id] = s
+}
+
+func ClearDead() {
+	UnmuteState(Dead)
+	for i := 0; i < len(Members); i++ {
+		if MemberState[i] == Dead {
+			SetUserState(i, Alive)
+		}
 	}
 }
 
@@ -66,4 +96,37 @@ func MuteUser(id int) {
 		fmt.Scanln(&id)
 	}
 	Session.GuildMemberMute(Conf.GuildID, Members[id].User.ID, true)
+}
+
+func MuteState(s State) {
+	for i := 0; i < len(Members); i++ {
+		if MemberState[i] != Offline && (MemberState[i] == s || s == -1) {
+			MuteUser(i)
+		}
+	}
+}
+
+func UnmuteUser(id int) {
+	if id == -1 {
+		ListNotInState(Offline)
+		fmt.Printf("Select a User |> ")
+		fmt.Scanln(&id)
+	}
+	Session.GuildMemberMute(Conf.GuildID, Members[id].User.ID, false)
+}
+
+func UnmuteState(s State) {
+	for i := 0; i < len(Members); i++ {
+		if MemberState[i] != Offline && (MemberState[i] == s || s == -1) {
+			MuteUser(i)
+		}
+	}
+}
+
+func UserOnline(id int) bool {
+	err := Session.GuildMemberDeafen(Conf.GuildID, Members[id].User.ID, false)
+	if err != nil {
+		return false
+	}
+	return true
 }

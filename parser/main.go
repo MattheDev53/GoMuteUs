@@ -6,5 +6,11 @@ func Parse(cmd string) {
 		muteParser(cmd[1:])
 	case '1':
 		unmuteParser(cmd[1:])
+	case '7':
+		offlineParser(cmd[1:])
+	case '8':
+		aliveParser(cmd[1:])
+	case '9':
+		deadParser(cmd[1:])
 	}
 }
