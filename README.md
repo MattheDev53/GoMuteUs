@@ -86,3 +86,34 @@ If you want text commands, send patches I guess.
 
 +  - End Command (used to run multiple commands)
 ```
+
+### Config File
+
+The config file is placed at ~/.config/GoMuteUs/config.json
+(or %AppData%/GoMuteUs/config.json on Windows)
+and can be setup as follows
+
+```json
+{
+  "Token": "..."
+  "GuildID": "0000000000000000000"
+}
+```
+
+Where `Token` is the Your Discord Token,
+and `GuildID` is the ID of your Server
+
+### Bot Setup
+
+These instructions assume you know how to setup [a discord bot](https://discord.com/developers/applications).
+If you do not, go look it up.
+
+#### Installation
+
+- Deselect `User Install`
+- Add the `bot` scope to the scopes
+- Under Permissions, add `Deafen Members` and `Mute Members`
+
+#### Bot
+
+- Enable `Server Members Intent` Under `Privileged Gateway Intents`
