@@ -14,8 +14,8 @@
 }:
 
 buildGoApplication {
-  pname = "myapp";
-  version = "0.1";
+  pname = "gomuteus";
+  version = "0.0.0";
   pwd = ./.;
   src = ./.;
   modules = ./gomod2nix.toml;
