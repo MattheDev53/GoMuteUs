@@ -14,7 +14,7 @@
 }:
 
 buildGoApplication {
-  pname = "gomuteus";
+  pname = "GoMuteUs";
   version = "0.0.0";
   pwd = ./.;
   src = ./.;
