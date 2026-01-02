@@ -18,8 +18,9 @@ func unmuteParser(cmd string) {
 	case '1':
 		fmt.Println("Unmuting User:")
 		discord.UnmuteUser(-1)
-	}
-	if cmd[1:] != "" {
+	case '+':
+		fmt.Println("Unmuting Alive:")
+		discord.UnmuteState(discord.Alive)
 		Parse(cmd[1:])
 	}
 }

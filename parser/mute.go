@@ -18,8 +18,9 @@ func muteParser(cmd string) {
 	case '1':
 		fmt.Println("Muting User:")
 		discord.MuteUser(-1)
-	}
-	if cmd[1:] != "" {
+	case '+':
+		fmt.Println("Muting Alive:")
+		discord.MuteState(discord.Alive)
 		Parse(cmd[1:])
 	}
 }

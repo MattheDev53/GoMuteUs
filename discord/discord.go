@@ -88,13 +88,13 @@ func SelectMemberNotInState(s State) int {
 }
 
 func SetUserDead(id int) {
-	if id == -1 { SelectMemberInState(Alive) }
+	if id == -1 { id = SelectMemberInState(Alive) }
 	if id == -1 { return }
 	SetUserState(id, Dead)
 }
 
 func SetUserState(id int, s State) {
-	if id == -1 { SelectMemberNotInState(s) }
+	if id == -1 { id = SelectMemberNotInState(s) }
 	if id == -1 { return }
 	MemberState[id] = s
 }
@@ -121,7 +121,7 @@ func StateName(s State) string {
 }
 
 func MuteUser(id int) {
-	if id == -1 { SelectMemberNotInState(Offline) }
+	if id == -1 { id = SelectMemberNotInState(Offline) }
 	if id == -1 { return }
 	Session.GuildMemberMute(Conf.GuildID, Members[id].User.ID, true)
 }
@@ -135,7 +135,7 @@ func MuteState(s State) {
 }
 
 func UnmuteUser(id int) {
-	if id == -1 { SelectMemberNotInState(Offline) }
+	if id == -1 { id = SelectMemberNotInState(Offline) }
 	if id == -1 { return }
 	Session.GuildMemberMute(Conf.GuildID, Members[id].User.ID, false)
 }
