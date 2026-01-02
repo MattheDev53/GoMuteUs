@@ -13,10 +13,13 @@ func aliveParser(cmd string) {
 	}
 	switch cmd[0] {
 	case '0':
-		discord.MuteState(-1)
+		fmt.Println("Curiosity Killed The Cat")
 	case '1':
 		fmt.Println("Adding to Alive:")
 		discord.SetUserState(-1, discord.Alive)
+	}
+	if cmd[1:] != "" {
+		Parse(cmd[1:])
 	}
 }
 
@@ -32,7 +35,10 @@ func deadParser(cmd string) {
 		discord.ClearDead()
 	case '1':
 		fmt.Println("Adding to Deadlist")
-		discord.SetUserState(-1, discord.Dead)
+		discord.SetUserDead(-1)
+	}
+	if cmd[1:] != "" {
+		Parse(cmd[1:])
 	}
 }
 
@@ -48,5 +54,8 @@ func offlineParser(cmd string) {
 	case '1':
 		fmt.Println("Adding to Offline")
 		discord.SetUserState(-1, discord.Offline)
+	}
+	if cmd[1:] != "" {
+		Parse(cmd[1:])
 	}
 }

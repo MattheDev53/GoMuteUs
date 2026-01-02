@@ -26,20 +26,20 @@ const UserStr string = "[%4s][%02d]: %-32s\n"
 
 func ListMembers() {
 	for i := 0; i < len(Members); i++ {
-		fmt.Printf(UserStr, i, Members[i].User.Username, StateName(MemberState[i]))
+		fmt.Printf(UserStr, StateName(MemberState[i]), i, Members[i].User.Username)
 	}
 }
 func ListMembersInState(state State) {
 	for i := 0; i < len(Members); i++ {
 		if MemberState[i] == state {
-			fmt.Printf(UserStr, i, Members[i].User.Username, StateName(MemberState[i]))
+			fmt.Printf(UserStr, StateName(MemberState[i]), i, Members[i].User.Username)
 		}
 	}
 }
 func ListMembersNotInState(state State) {
 	for i := 0; i < len(Members); i++ {
 		if MemberState[i] != state {
-			fmt.Printf(UserStr, i, Members[i].User.Username, StateName(MemberState[i]))
+			fmt.Printf(UserStr, StateName(MemberState[i]), i, Members[i].User.Username)
 		}
 	}
 }
@@ -87,8 +87,15 @@ func SelectMemberNotInState(s State) int {
 		return id
 }
 
+func SetUserDead(id int) {
+	if id == -1 { SelectMemberInState(Alive) }
+	if id == -1 { return }
+	SetUserState(id, Dead)
+}
+
 func SetUserState(id int, s State) {
-	SelectMemberNotInState(Offline)
+	if id == -1 { SelectMemberNotInState(s) }
+	if id == -1 { return }
 	MemberState[id] = s
 }
 
@@ -114,7 +121,8 @@ func StateName(s State) string {
 }
 
 func MuteUser(id int) {
-	SelectMemberNotInState(Offline)
+	if id == -1 { SelectMemberNotInState(Offline) }
+	if id == -1 { return }
 	Session.GuildMemberMute(Conf.GuildID, Members[id].User.ID, true)
 }
 
@@ -127,7 +135,8 @@ func MuteState(s State) {
 }
 
 func UnmuteUser(id int) {
-	SelectMemberNotInState(Offline)
+	if id == -1 { SelectMemberNotInState(Offline) }
+	if id == -1 { return }
 	Session.GuildMemberMute(Conf.GuildID, Members[id].User.ID, false)
 }
 

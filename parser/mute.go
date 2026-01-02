@@ -19,4 +19,7 @@ func muteParser(cmd string) {
 		fmt.Println("Muting User:")
 		discord.MuteUser(-1)
 	}
+	if cmd[1:] != "" {
+		Parse(cmd[1:])
+	}
 }

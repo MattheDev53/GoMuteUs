@@ -19,4 +19,7 @@ func unmuteParser(cmd string) {
 		fmt.Println("Unmuting User:")
 		discord.UnmuteUser(-1)
 	}
+	if cmd[1:] != "" {
+		Parse(cmd[1:])
+	}
 }
