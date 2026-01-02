@@ -2,7 +2,6 @@ package config
 
 import (
 	"os"
-	"fmt"
 	"encoding/json"
 	"github.com/charmbracelet/log"
 )
@@ -10,7 +9,6 @@ import (
 type Config struct{
 	GuildID string
 	Token   string
-	Users   []string
 }
 
 var conf, err = os.UserConfigDir()
@@ -21,7 +19,6 @@ func ReadConfig() Config {
 	byteString, err := os.ReadFile(ConfigFile)
 	if err != nil {
 		log.Fatalf("Error Reading Config File: %v\n", err)
-		fmt.Printf("Is there a config file at `%s`?\n", ConfigFile)
 	}
 	c := FromJson(byteString)
 	return c
