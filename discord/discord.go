@@ -20,24 +20,26 @@ const (
 var Session     *discordgo.Session
 var MemberState [99]State
 var Conf        cfg.Config
-var Members []*discordgo.Member
+var Members     []*discordgo.Member
 
-func ListAllMembers() {
+const UserStr string = "[%4s][%02d]: %-32s\n"
+
+func ListMembers() {
 	for i := 0; i < len(Members); i++ {
-		fmt.Printf("[%02d]: %-32s [%s]\n", i, Members[i].User.Username, StateName(MemberState[i]))
+		fmt.Printf(UserStr, i, Members[i].User.Username, StateName(MemberState[i]))
 	}
 }
-func ListInState(state State) {
+func ListMembersInState(state State) {
 	for i := 0; i < len(Members); i++ {
 		if MemberState[i] == state {
-			fmt.Printf("[%02d]: %-32s [%s]\n", i, Members[i].User.Username, StateName(MemberState[i]))
+			fmt.Printf(UserStr, i, Members[i].User.Username, StateName(MemberState[i]))
 		}
 	}
 }
-func ListNotInState(state State) {
+func ListMembersNotInState(state State) {
 	for i := 0; i < len(Members); i++ {
 		if MemberState[i] != state {
-			fmt.Printf("[%02d]: %-32s [%s]\n", i, Members[i].User.Username, StateName(MemberState[i]))
+			fmt.Printf(UserStr, i, Members[i].User.Username, StateName(MemberState[i]))
 		}
 	}
 }
@@ -56,19 +58,37 @@ func OptimizeUsers() {
 	fmt.Println("Optimizing User List")
 	for i := 0; i < len(Members); i++ {
 		if UserOnline(i) {
-			SetUserState(i, Alive)
+			SetUserState(i, MemberState[i])
 		} else {
 			SetUserState(i, Offline)
 		}
 	}
 }
 
-func SetUserState(id int, s State) {
-	if id == -1 {
-		ListNotInState(Offline)
+func SelectMember() int {
+	  var id int
+		ListMembers()
 		fmt.Printf("Select a User |> ")
 		fmt.Scanln(&id)
-	}
+		return id
+}
+func SelectMemberInState(s State) int {
+	  var id int
+		ListMembersInState(s)
+		fmt.Printf("Select a User |> ")
+		fmt.Scanln(&id)
+		return id
+}
+func SelectMemberNotInState(s State) int {
+	  var id int
+		ListMembersNotInState(s)
+		fmt.Printf("Select a User |> ")
+		fmt.Scanln(&id)
+		return id
+}
+
+func SetUserState(id int, s State) {
+	SelectMemberNotInState(Offline)
 	MemberState[id] = s
 }
 
@@ -94,11 +114,7 @@ func StateName(s State) string {
 }
 
 func MuteUser(id int) {
-	if id == -1 {
-		ListNotInState(Offline)
-		fmt.Printf("Select a User |> ")
-		fmt.Scanln(&id)
-	}
+	SelectMemberNotInState(Offline)
 	Session.GuildMemberMute(Conf.GuildID, Members[id].User.ID, true)
 }
 
@@ -111,11 +127,7 @@ func MuteState(s State) {
 }
 
 func UnmuteUser(id int) {
-	if id == -1 {
-		ListNotInState(Offline)
-		fmt.Printf("Select a User |> ")
-		fmt.Scanln(&id)
-	}
+	SelectMemberNotInState(Offline)
 	Session.GuildMemberMute(Conf.GuildID, Members[id].User.ID, false)
 }
 

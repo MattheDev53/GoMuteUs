@@ -8,7 +8,7 @@ import (
 func aliveParser(cmd string) {
 	if cmd == "" {
 		fmt.Println("All Users:")
-		discord.ListNotInState(discord.Offline)
+		discord.ListMembersNotInState(discord.Offline)
 		return
 	}
 	switch cmd[0] {
@@ -23,7 +23,7 @@ func aliveParser(cmd string) {
 func deadParser(cmd string) {
 	if cmd == "" {
 		fmt.Println("Deadlist:")
-		discord.ListInState(discord.Dead)
+		discord.ListMembersInState(discord.Dead)
 		return
 	}
 	switch cmd[0] {
@@ -39,7 +39,7 @@ func deadParser(cmd string) {
 func offlineParser(cmd string) {
 	if cmd == "" {
 		fmt.Println("Offline Users:")
-		discord.ListInState(discord.Offline)
+		discord.ListMembersInState(discord.Offline)
 		return
 	}
 	switch cmd[0] {
