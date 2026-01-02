@@ -7,6 +7,9 @@ schema = 3
   [mod."github.com/bwmarrin/discordgo"]
     version = "v0.29.0"
     hash = "sha256-jQIKWk4xc7iFK+XoPlX5p5cgab4yYo7Qs1eDoDlVjzg="
+  [mod."github.com/catppuccin/go"]
+    version = "v0.3.0"
+    hash = "sha256-otcMhI62ezoKGqzG7Owi/NROep7O0voJxp6bwXYg9+Q="
   [mod."github.com/charmbracelet/colorprofile"]
     version = "v0.2.3-0.20250311203215-f60798e515dc"
     hash = "sha256-D9E/bMOyLXAUVOHA1/6o3i+vVmLfwIMOWib6sU7A6+Q="

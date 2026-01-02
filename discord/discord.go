@@ -3,6 +3,8 @@ package discord
 import (
 	"github.com/bwmarrin/discordgo"
 	cfg "github.com/MattheDev53/GoMuteUs/config"
+	lg "github.com/charmbracelet/lipgloss"
+	catppuccin "github.com/catppuccin/go"
 
 	"fmt"
 )
@@ -22,20 +24,20 @@ var Members []*discordgo.Member
 
 func ListAllMembers() {
 	for i := 0; i < len(Members); i++ {
-		fmt.Printf("%02d: %32s [%s]\n", i, Members[i].User.Username, StateName(MemberState[i]))
+		fmt.Printf("[%02d]: %-32s [%s]\n", i, Members[i].User.Username, StateName(MemberState[i]))
 	}
 }
 func ListInState(state State) {
 	for i := 0; i < len(Members); i++ {
 		if MemberState[i] == state {
-			fmt.Printf("%02d: %32s [%s]\n", i, Members[i].User.Username, StateName(MemberState[i]))
+			fmt.Printf("[%02d]: %-32s [%s]\n", i, Members[i].User.Username, StateName(MemberState[i]))
 		}
 	}
 }
 func ListNotInState(state State) {
 	for i := 0; i < len(Members); i++ {
 		if MemberState[i] != state {
-			fmt.Printf("%02d: %32s [%s]\n", i, Members[i].User.Username, StateName(MemberState[i]))
+			fmt.Printf("[%02d]: %-32s [%s]\n", i, Members[i].User.Username, StateName(MemberState[i]))
 		}
 	}
 }
@@ -53,7 +55,9 @@ func InitializeUserState() {
 func OptimizeUsers() {
 	fmt.Println("Optimizing User List")
 	for i := 0; i < len(Members); i++ {
-		if !UserOnline(i) {
+		if UserOnline(i) {
+			SetUserState(i, Alive)
+		} else {
 			SetUserState(i, Offline)
 		}
 	}
@@ -80,13 +84,13 @@ func ClearDead() {
 func StateName(s State) string {
 	switch s {
 	case Alive:
-		return "LIVE"
+		return lg.NewStyle().Bold(true).Foreground(lg.Color(catppuccin.Mocha.Green().Hex)).Render("LIVE")
 	case Dead:
-		return "DEAD"
+		return lg.NewStyle().Bold(true).Foreground(lg.Color(catppuccin.Mocha.Red().Hex)).Render("DEAD")
 	case Offline:
-		return "AWAY"
+		return lg.NewStyle().Bold(true).Foreground(lg.Color(catppuccin.Mocha.Peach().Hex)).Render("AWAY")
 	}
-	return "UNKN"
+	return lg.NewStyle().Bold(true).Foreground(lg.Color(catppuccin.Mocha.Mauve().Hex)).Render("UNKN")
 }
 
 func MuteUser(id int) {
@@ -118,7 +122,7 @@ func UnmuteUser(id int) {
 func UnmuteState(s State) {
 	for i := 0; i < len(Members); i++ {
 		if MemberState[i] != Offline && (MemberState[i] == s || s == -1) {
-			MuteUser(i)
+			UnmuteUser(i)
 		}
 	}
 }
