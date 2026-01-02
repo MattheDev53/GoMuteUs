@@ -4,72 +4,34 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/charmbracelet/log"
 	cfg "github.com/MattheDev53/GoMuteUs/config"
+	"github.com/MattheDev53/GoMuteUs/parser"
+	"github.com/MattheDev53/GoMuteUs/discord"
 
 	"fmt"
 )
 
-type State int
-
-const (
-	Alive State = iota
-	Dead
-	Offline
-)
-
-var Members     []*discordgo.Member
-var MemberState [99]State
 
 func main() {
-	conf := cfg.ReadConfig()
+	discord.Conf = cfg.ReadConfig()
+	var err error
 
-	discord, err := discordgo.New(conf.Token)
+	discord.Session, err = discordgo.New(discord.Conf.Token)
 	if err != nil {
 		log.Fatalf("Error Initializing: %v\n", err)
 	}
 
-	err = discord.Open()
+	err = discord.Session.Open()
 	if err != nil {
 		log.Fatalf("Error Opening: %v\n", err)
 	}
-	defer discord.Close()
+	defer discord.Session.Close()
 
-	Members, err = discord.GuildMembers(conf.GuildID, "0", 99)
-	if err != nil {
-		log.Fatalf("Error Getting Guild Members: %v\n", err)
-	}
-
-	InitializeUserState()
-	ListMembers(-1)
 
 	cmd := ""
 	for cmd != "exit" {
 		fmt.Printf("GoMuteUs |> ")
 		fmt.Scanln(&cmd)
+		parser.Parse(cmd)
 	}
 }
 
-func ListMembers(state State) {
-	for i := 0; i < len(Members); i++ {
-		if MemberState[i] == state || state == -1 {
-			fmt.Printf("%02d: %32s [%s]\n", i, Members[i].User.Username, StateName(MemberState[i]))
-		}
-	}
-}
-
-func InitializeUserState() {
-	for i := 0; i < len(Members); i++ {
-		MemberState[i] = Alive
-	}
-}
-
-func StateName(s State) string {
-	switch s {
-	case Alive:
-		return "LIVE"
-	case Dead:
-		return "DEAD"
-	case Offline:
-		return "AWAY"
-	}
-	return "UNKN"
-}

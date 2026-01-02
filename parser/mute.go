@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"github.com/MattheDev53/GoMuteUs/discord"
 )
 
 func muteParser(cmd string) {
@@ -9,6 +10,6 @@ func muteParser(cmd string) {
 	case '0':
 		fmt.Println("Mute Alive")
 	case '1':
-		fmt.Println("Mute User")
+		discord.MuteUser(-1)
 	}
 }
