@@ -1,10 +1,10 @@
 package discord
 
 import (
-	"github.com/bwmarrin/discordgo"
 	cfg "github.com/MattheDev53/GoMuteUs/config"
-	lg "github.com/charmbracelet/lipgloss"
+	"github.com/bwmarrin/discordgo"
 	catppuccin "github.com/catppuccin/go"
+	lg "github.com/charmbracelet/lipgloss"
 
 	"fmt"
 )
@@ -17,10 +17,10 @@ const (
 	Offline
 )
 
-var Session     *discordgo.Session
+var Session *discordgo.Session
 var MemberState [99]State
-var Conf        cfg.Config
-var Members     []*discordgo.Member
+var Conf cfg.Config
+var Members []*discordgo.Member
 
 const UserStr string = "[%4s][%02d]: %-32s\n"
 
@@ -66,36 +66,44 @@ func OptimizeUsers() {
 }
 
 func SelectMember() int {
-	  var id int
-		ListMembers()
-		fmt.Printf("Select a User |> ")
-		fmt.Scanln(&id)
-		return id
+	var id int
+	ListMembers()
+	fmt.Printf("Select a User |> ")
+	fmt.Scanln(&id)
+	return id
 }
 func SelectMemberInState(s State) int {
-	  var id int
-		ListMembersInState(s)
-		fmt.Printf("Select a User |> ")
-		fmt.Scanln(&id)
-		return id
+	var id int
+	ListMembersInState(s)
+	fmt.Printf("Select a User |> ")
+	fmt.Scanln(&id)
+	return id
 }
 func SelectMemberNotInState(s State) int {
-	  var id int
-		ListMembersNotInState(s)
-		fmt.Printf("Select a User |> ")
-		fmt.Scanln(&id)
-		return id
+	var id int
+	ListMembersNotInState(s)
+	fmt.Printf("Select a User |> ")
+	fmt.Scanln(&id)
+	return id
 }
 
 func SetUserDead(id int) {
-	if id == -1 { id = SelectMemberInState(Alive) }
-	if id == -1 { return }
+	if id == -1 {
+		id = SelectMemberInState(Alive)
+	}
+	if id == -1 {
+		return
+	}
 	SetUserState(id, Dead)
 }
 
 func SetUserState(id int, s State) {
-	if id == -1 { id = SelectMemberNotInState(s) }
-	if id == -1 { return }
+	if id == -1 {
+		id = SelectMemberNotInState(s)
+	}
+	if id == -1 {
+		return
+	}
 	MemberState[id] = s
 }
 
@@ -121,8 +129,12 @@ func StateName(s State) string {
 }
 
 func MuteUser(id int) {
-	if id == -1 { id = SelectMemberNotInState(Offline) }
-	if id == -1 { return }
+	if id == -1 {
+		id = SelectMemberNotInState(Offline)
+	}
+	if id == -1 {
+		return
+	}
 	Session.GuildMemberMute(Conf.GuildID, Members[id].User.ID, true)
 }
 
@@ -135,8 +147,12 @@ func MuteState(s State) {
 }
 
 func UnmuteUser(id int) {
-	if id == -1 { id = SelectMemberNotInState(Offline) }
-	if id == -1 { return }
+	if id == -1 {
+		id = SelectMemberNotInState(Offline)
+	}
+	if id == -1 {
+		return
+	}
 	Session.GuildMemberMute(Conf.GuildID, Members[id].User.ID, false)
 }
 

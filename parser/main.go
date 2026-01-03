@@ -4,7 +4,7 @@ func Parse(cmd string) {
 	if cmd == "" {
 		return
 	}
-	switch cmd[0]{
+	switch cmd[0] {
 	case '0':
 		muteParser(cmd[1:])
 	case '1':

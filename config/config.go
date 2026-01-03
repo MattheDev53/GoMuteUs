@@ -1,12 +1,12 @@
 package config
 
 import (
-	"os"
 	"encoding/json"
 	"github.com/charmbracelet/log"
+	"os"
 )
 
-type Config struct{
+type Config struct {
 	GuildID string
 	Token   string
 }

@@ -1,15 +1,14 @@
 package main
 
 import (
+	cfg "github.com/MattheDev53/GoMuteUs/config"
+	"github.com/MattheDev53/GoMuteUs/discord"
+	"github.com/MattheDev53/GoMuteUs/parser"
 	"github.com/bwmarrin/discordgo"
 	"github.com/charmbracelet/log"
-	cfg "github.com/MattheDev53/GoMuteUs/config"
-	"github.com/MattheDev53/GoMuteUs/parser"
-	"github.com/MattheDev53/GoMuteUs/discord"
 
 	"fmt"
 )
-
 
 func main() {
 	discord.Conf = cfg.ReadConfig()
@@ -26,7 +25,7 @@ func main() {
 	}
 	defer discord.Session.Close()
 
-  mems, err := discord.Session.GuildMembers(discord.Conf.GuildID, "0", 99)
+	mems, err := discord.Session.GuildMembers(discord.Conf.GuildID, "0", 99)
 
 	for i := 0; i < len(mems); i++ {
 		if !mems[i].User.Bot {
@@ -42,4 +41,3 @@ func main() {
 		parser.Parse(cmd)
 	}
 }
-

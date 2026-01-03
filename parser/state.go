@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"github.com/MattheDev53/GoMuteUs/discord"
 	"fmt"
+	"github.com/MattheDev53/GoMuteUs/discord"
 )
 
 func aliveParser(cmd string) {
